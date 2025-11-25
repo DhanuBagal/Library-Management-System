@@ -1,0 +1,73 @@
+<section class="container py-4">
+    <div class="card shadow-sm">
+        <div class="card-body">
+            <div class="d-flex justify-content-between align-items-center mb-3">
+                <h4 class="card-title mb-0">Library — Book Manager</h4>
+                <small class="text-muted">Manage books quickly</small>
+            </div>
+
+            <form [formGroup]="form" class="row g-3" >
+                <div class="col-12 col-md-6">
+                    <label for="bookName" class="form-label">Book Name</label>
+                    <input id="bookName" type="text" class="form-control" formControlName="bookName" required/>
+                    <div *ngIf="form.get('bookName')?.invalid && form.get('bookName')?.touched" class="text-danger small mt-1">Book name is required.</div>
+                </div>
+
+                <div class="col-12 col-md-6">
+                    <label for="bookType" class="form-label">Book Type</label>
+                    <select id="bookType" class="form-select" formControlName="bookType" required>
+                        <option value="">Choose...</option>
+                        <option>Fiction</option>
+                        <option>Non-Fiction</option>
+                        <option>Sci-Fi</option>
+                        <option>Comedy</option>
+                        <option>Other</option>
+                        
+                    </select>
+                </div>
+
+                <div class="col-12">
+                    <label for="description" class="form-label">Description</label>
+                    <input id="description" type="text" class="form-control" formControlName="description" required/>
+                </div>
+
+                <div class="col-12">
+                    <label for="authors" class="form-label">Authors (comma separated)</label>
+                    <input id="authors" type="text" class="form-control" formControlName="authors" placeholder="e.g. John Doe, Jane Smith" required/>
+                </div>
+
+                <div class="col-12 d-flex gap-2">
+                    <button type="button" class="btn btn-primary" (click)="insert()" [disabled]="form.invalid && form.untouched">{{editMode? 'Update' : 'Insert'}}</button>
+                    <!-- <button type="button" class="btn btn-outline-primary" (click)="update()" [disabled]="!selectedId || (form.invalid&& form.untouched)">Update</button> -->
+                    <button type="button" class="btn btn-outline-danger" (click)="delete()" [disabled]="!selectedId">Delete</button>
+                    <button type="button" class="btn btn-secondary ms-auto" (click)="reset()">Reset</button>
+                </div>
+            </form>
+
+            <div class="table-responsive mt-4">
+                <table class="table table-striped table-hover align-middle">
+                    <thead class="table-light">
+                        <tr>
+                            <th style="width:60px">ID</th>
+                            <th>Book</th>
+                            <th style="width:160px">Type</th>
+                            <th>Authors</th>
+                            <th style="width:120px">Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr *ngFor="let b of (books | async)">
+                            <td>{{ b.id }}</td>
+                            <td>{{ b.bookName }}</td>
+                            <td>{{ b.bookType }}</td>
+                            <td>{{ (b.authors || []).join(', ') }}</td>
+                            <td>
+                                <button type="button" class="btn btn-sm btn-outline-secondary" (click)="edit(b)">Edit</button>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</section>
